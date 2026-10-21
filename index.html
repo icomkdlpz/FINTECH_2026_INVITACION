@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FINTECH</title>
+
+    <!-- Fuente Anton de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
+        rel="stylesheet">
+
+    <!-- Archivos del proyecto -->
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+<!-- BOTÓN PRINCIPAL -->
+<button
+    type="button"
+    class="btn-confirmar"
+    id="btn-abrir-formulario">
+    CONFIRMAR ASISTENCIA
+</button>
+
+<!-- VENTANA EMERGENTE DEL FORMULARIO -->
+
+<!-- VENTANA EMERGENTE DEL FORMULARIO -->
+<div class="modal-overlay" id="modal-inscripcion" aria-hidden="true">
+    <section
+        class="modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titulo-modal">
+        <!-- Botón para cerrar -->
+        <button
+            type="button"
+            class="modal-cerrar"
+            id="btn-cerrar-modal"
+            aria-label="Cerrar formulario">
+            &times;
+        </button>
+
+        <h2 id="titulo-modal">FORMULARIO DE INSCRIPCIÓN</h2>
+
+        <!-- FORMULARIO -->
+        <form id="formulario-inscripcion">
+            <input type="hidden" name="_requestId" id="request-id">
+            <input type="hidden" name="_parentOrigin" id="parent-origin">
+
+            <div class="form-campo">
+                <label for="nombre">Nombre Completo:</label>
+                <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    placeholder="Escribe tu nombre completo"
+                    autocomplete="name"
+                    required>
+            </div>
+
+            <div class="form-campo">
+                <label for="institucion">Institución:</label>
+                <input
+                    type="text"
+                    id="institucion"
+                    name="institucion"
+                    placeholder="Escribe tu institución"
+                    autocomplete="organization"
+                    required>
+            </div>
+
+            <div class="form-campo">
+                <label for="correo">Correo Electrónico:</label>
+                <input
+                    type="email"
+                    id="correo"
+                    name="correo"
+                    placeholder="ejemplo@correo.com"
+                    autocomplete="email"
+                    required>
+            </div>
+
+            <div class="form-campo">
+                <label for="celular">Número de Celular:</label>
+                <input
+                    type="tel"
+                    id="celular"
+                    name="celular"
+                    placeholder="Escribe tu número de celular"
+                    autocomplete="tel"
+                    required>
+            </div>
+
+            <button type="submit" class="btn-enviar">
+                ENVIAR
+            </button>
+
+        </form>
+
+        <!-- PANTALLA DE CARGA -->
+        <div
+            class="estado estado-cargando"
+            id="estado-cargando"
+            role="status"
+            aria-live="polite"
+            hidden>
+
+            <div class="spinner"></div>
+            <h3>Enviando inscripción...</h3>
+            <p>Estamos procesando tus datos.</p>
+
+        </div>
+
+        <!-- PANTALLA DE CONFIRMACIÓN -->
+        <div
+            class="estado estado-exito"
+            id="estado-exito"
+            role="status"
+            aria-live="polite"
+            hidden>
+
+            <div class="icono-exito">&#10003;</div>
+
+            <h3>¡Inscripción completada!</h3>
+
+            <p id="mensaje-exito">
+            Tu inscripción se registró correctamente.
+            </p>
+            
+            <button
+                type="button"
+                class="btn-finalizar"
+                id="btn-finalizar">
+                ACEPTAR
+            </button>
+
+        </div>
+
+        <!-- PANTALLA DE ERROR -->
+        <div
+          class="estado estado-error"
+          id="estado-error"
+          role="alert"
+          aria-live="assertive"
+          hidden>
+
+        <h3>No se pudo completar la inscripción</h3>
+
+        <p id="mensaje-error">
+        No fue posible registrar tus datos.
+        </p>
+
+    <button
+        type="button"
+        class="btn-finalizar"
+        id="btn-reintentar">
+        VOLVER AL FORMULARIO
+    </button>
+
+</div>
+
+    </section>
+
+</div>
+
+<!-- Destino invisible de la respuesta de Apps Script -->
+<iframe
+    id="frame-apps-script"
+    name="frame-apps-script"
+    title="Respuesta del registro"
+    hidden>
+</iframe>
+
+</body>
+</html>
