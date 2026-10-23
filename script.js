@@ -460,3 +460,27 @@ function iniciarPagina() {
     console.log("FINTECH: JavaScript iniciado correctamente.");
 
 }
+
+// ==========================================
+// PANTALLA DE CARGA
+// ==========================================
+const inicioCarga = Date.now();
+window.addEventListener("load", () => {
+
+    const pantallaCarga = document.getElementById("pantalla-carga");
+
+    if (!pantallaCarga) return;
+
+    const tiempoMinimo = 2000; // 2000 ms = 2 segundos
+    const tiempoTranscurrido = Date.now() - inicioCarga;
+
+    const tiempoRestante = Math.max(
+        0,
+        tiempoMinimo - tiempoTranscurrido
+    );
+
+    setTimeout(() => {
+        pantallaCarga.classList.add("ocultar");
+    }, tiempoRestante);
+
+});
