@@ -27,41 +27,48 @@
      <img src="imagenes/logo.png" alt="Logo" class="logo-carga">
     </div>
 
-<!-- IMAGEN PRINCIPAL DE LA INVITACIÓN -->
 
-<div class="invitacion-overlay">
+<!-- PANTALLA PRINCIPAL DE LA INVITACIÓN -->
 
-    <picture class="picture-invitacion">
+<main class="pantalla-invitacion">
 
-        <!-- Imagen para pantallas horizontales -->
-        <source
-            media="(orientation: landscape)"
-            srcset="imagenes/horizontal.png">
+    <!-- IMAGEN DE LA INVITACIÓN -->
+    <div class="invitacion-overlay">
 
-        <!-- Imagen predeterminada para pantallas verticales -->
-        <img
-            src="imagenes/vertical.png"
-            alt="Invitación oficial de la FINTECH"
-            class="imagen-invitacion">
+        <picture class="picture-invitacion">
 
-    </picture>
+            <!-- Imagen horizontal -->
+            <source
+                media="(orientation: landscape)"
+                srcset="imagenes/horizontal.png">
 
-    <!-- CAPA DE PARTÍCULAS -->
-    <canvas
-      id="canvas-particulas"
-      class="canvas-particulas"
-      aria-hidden="true">
-    </canvas>
+            <!-- Imagen vertical -->
+            <img
+                src="imagenes/vertical.png"
+                alt="Invitación oficial de la FINTECH"
+                class="imagen-invitacion">
 
-</div>
-    
-<!-- BOTÓN PRINCIPAL -->
-<button
-    type="button"
-    class="btn-confirmar"
-    id="btn-abrir-formulario">
-    CONFIRMAR ASISTENCIA
-</button>
+        </picture>
+
+        <!-- CAPA DE PARTÍCULAS -->
+        <canvas
+            id="canvas-particulas"
+            class="canvas-particulas"
+            aria-hidden="true">
+        </canvas>
+
+    </div>
+
+    <!-- BOTÓN EN LA PARTE INFERIOR -->
+    <button
+        type="button"
+        class="btn-confirmar"
+        id="btn-abrir-formulario">
+        CONFIRMAR ASISTENCIA
+    </button>
+
+</main>
+
 
 <!-- VENTANA EMERGENTE DEL FORMULARIO -->
 

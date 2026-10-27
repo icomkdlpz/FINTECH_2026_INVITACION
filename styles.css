@@ -24,56 +24,57 @@ body {
     letter-spacing: 1px;
 }
 
-
 /* =========================================
-   2. BOTÓN CONFIRMAR ASISTENCIA
+   BOTÓN CONFIRMAR ASISTENCIA
 ========================================= */
 
 .btn-confirmar {
     display: block;
 
     /* Tamaño */
+    flex: 0 0 auto;
     width: 73.61vw;
     height: 6.875vh;
+    min-height: 44px;
     max-width: none;
     padding: 0 12px;
+    box-sizing: border-box;
 
     /* Forma */
     border: 2px solid #4c889b;
     border-radius: 12px;
-
-    /* Sombra inferior */
     box-shadow: 0 6px 0 #004aad;
 
     /* Texto */
-    font-family: inherit;
+    font-family: 'Anton', sans-serif;
     font-size: 16px;
-    font-weight: bold;
-    letter-spacing: inherit;
+    font-weight: normal;
+    letter-spacing: 1px;
     text-align: center;
 
     /* Colores */
     background-color: #4c889b;
     color: #ffffff;
 
-    /* Posición */
-    position: absolute;
-    top: 85vh;
-    left: 50%;
+    /* Posición dentro de la pantalla principal */
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
 
-    margin: 0;
-    transform: translateX(-50%);
+    transform: none;
+    margin: 12px auto 20px;
 
+    z-index: 3;
     cursor: pointer;
 
-    /* Transiciones */
     transition:
         background-color 0.2s ease,
         color 0.2s ease,
         transform 0.2s ease,
         box-shadow 0.2s ease;
 }
-
 
 /* Efecto al presionar */
 
@@ -82,11 +83,9 @@ body {
     color: #ffffff;
     border-color: #004aad;
 
-    transform: translate(-50%, 4px);
-
+    transform: translateY(4px);
     box-shadow: 0 1px 0 #004aad;
 }
-
 
 /* =========================================
    3. VENTANA EMERGENTE
@@ -497,32 +496,50 @@ body {
 
 }
 
-/* =====================================
-   IMAGEN PRINCIPAL DE LA INVITACIÓN
-===================================== */
-/* CONTENEDOR DE LA IMAGEN */
 
-.invitacion-overlay {
+/* =========================================
+   PANTALLA PRINCIPAL
+========================================= */
+
+.pantalla-invitacion {
     position: fixed;
     inset: 0;
+    z-index: 1;
 
     width: 100%;
     height: 100vh;
     height: 100dvh;
 
     display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+    background-color: #00132e;
+}
+
+
+/* =========================================
+   ÁREA DE LA IMAGEN
+========================================= */
+
+.invitacion-overlay {
+    position: relative;
+
+    /* Ocupa todo el espacio disponible sobre el botón */
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+
+    display: flex;
     align-items: center;
     justify-content: center;
 
-    background-color: #00132e;
-
-    /* Mantener la invitación por encima del botón */
-    z-index: 99;
-
     overflow: hidden;
+    background-color: #00132e;
 }
 
-/* CONTENEDOR RESPONSIVO */
+
+/* Contenedor de las imágenes vertical y horizontal */
 
 .picture-invitacion {
     display: block;
@@ -531,7 +548,8 @@ body {
     height: 100%;
 }
 
-/* IMAGEN SELECCIONADA */
+
+/* Imagen seleccionada según la orientación */
 
 .imagen-invitacion {
     display: block;
@@ -543,16 +561,10 @@ body {
     object-position: center;
 }
 
+
 /* =========================================
-   CAPA DE PARTÍCULAS
+   PARTÍCULAS SOBRE LA IMAGEN
 ========================================= */
-
-.picture-invitacion {
-    position: relative;
-    z-index: 1;
-}
-
-/* Canvas transparente sobre la invitación */
 
 .canvas-particulas {
     position: absolute;
@@ -562,7 +574,96 @@ body {
     height: 100%;
 
     z-index: 2;
-
-    /* No bloquear clics ni interacciones */
     pointer-events: none;
+}
+
+
+/* =========================================
+   BOTÓN INFERIOR
+========================================= */
+
+.btn-confirmar {
+    display: block;
+    flex: 0 0 auto;
+    align-self: center;
+
+    /* Tamaño */
+    width: 73.61vw;
+    height: 6.875vh;
+    max-width: none;
+    padding: 0 12px;
+    box-sizing: border-box;
+
+    /* Forma */
+    border: 2px solid #4c889b;
+    border-radius: 12px;
+
+    /* Sombra inferior */
+    box-shadow: 0 6px 0 #004aad;
+
+    /* Texto */
+    font-family: 'Anton', sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    text-align: center;
+
+    /* Colores */
+    background-color: #4c889b;
+    color: #ffffff;
+
+    /* Separación del borde inferior */
+    margin: 12px auto;
+    margin-bottom: max(20px, env(safe-area-inset-bottom));
+
+    /* Efectos */
+    cursor: pointer;
+
+    position: relative;
+    z-index: 3;
+
+    transform: none;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Efecto de presión */
+
+.btn-confirmar:active {
+    background-color: #004aad;
+    color: #ffffff;
+    border-color: #004aad;
+
+    transform: translateY(4px);
+
+    box-shadow: 0 1px 0 #004aad;
+}
+
+
+/* =========================================
+   ADAPTACIÓN A PANTALLAS PEQUEÑAS
+========================================= */
+
+@media (max-width: 480px) {
+
+    .btn-confirmar {
+        width: 73.61vw;
+        height: 6.875vh;
+        font-size: 14px;
+    }
+
+}
+
+
+/* =========================================
+   VENTANA EMERGENTE SOBRE TODO
+========================================= */
+
+.modal-overlay {
+    z-index: 1000;
 }
