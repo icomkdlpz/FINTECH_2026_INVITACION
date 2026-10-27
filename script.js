@@ -484,3 +484,312 @@ window.addEventListener("load", () => {
     }, tiempoRestante);
 
 });
+
+
+/* =========================================
+   FINTECH - EFECTO DE PARTÍCULAS
+========================================= */
+
+document.addEventListener("DOMContentLoaded", iniciarParticulasFintech);
+
+function iniciarParticulasFintech() {
+
+    const canvas = document.getElementById("canvas-particulas");
+    const imagen = document.querySelector(".imagen-invitacion");
+
+    if (!canvas || !imagen) {
+        console.warn("FINTECH: no se encontró el canvas o la imagen.");
+        return;
+    }
+
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+        console.warn("FINTECH: no se pudo iniciar el canvas.");
+        return;
+    }
+
+    let ancho = 0;
+    let alto = 0;
+    let particulas = [];
+
+    let limites = {
+        izquierda: 0,
+        arriba: 0,
+        derecha: window.innerWidth,
+        abajo: window.innerHeight,
+        ancho: window.innerWidth,
+        alto: window.innerHeight
+    };
+
+    const movimientoReducido = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+
+    /* =====================================
+       1. CALCULAR EL ÁREA REAL DE LA IMAGEN
+    ===================================== */
+
+    function calcularLimitesImagen() {
+
+        const rect = imagen.getBoundingClientRect();
+
+        const anchoNatural = imagen.naturalWidth;
+        const altoNatural = imagen.naturalHeight;
+
+        if (!anchoNatural || !altoNatural) {
+            return {
+                izquierda: rect.left,
+                arriba: rect.top,
+                derecha: rect.right,
+                abajo: rect.bottom,
+                ancho: rect.width,
+                alto: rect.height
+            };
+        }
+
+        // La imagen usa object-fit: contain
+        const escala = Math.min(
+            rect.width / anchoNatural,
+            rect.height / altoNatural
+        );
+
+        const anchoDibujo = anchoNatural * escala;
+        const altoDibujo = altoNatural * escala;
+
+        const izquierda =
+            rect.left + (rect.width - anchoDibujo) / 2;
+
+        const arriba =
+            rect.top + (rect.height - altoDibujo) / 2;
+
+        return {
+            izquierda,
+            arriba,
+            derecha: izquierda + anchoDibujo,
+            abajo: arriba + altoDibujo,
+            ancho: anchoDibujo,
+            alto: altoDibujo
+        };
+    }
+
+
+    /* =====================================
+       2. CREAR PARTÍCULAS
+    ===================================== */
+
+    function crearParticulas() {
+
+        // Ajustar la cantidad al tamaño de la imagen
+        const area = limites.ancho * limites.alto;
+
+        const cantidad = Math.max(
+            25,
+            Math.min(85, Math.round(area / 14000))
+        );
+
+        particulas = [];
+
+        for (let i = 0; i < cantidad; i++) {
+
+            particulas.push({
+                x: limites.izquierda +
+                    Math.random() * limites.ancho,
+
+                y: limites.arriba +
+                    Math.random() * limites.alto,
+
+                vx: (Math.random() - 0.5) * 0.35,
+                vy: (Math.random() - 0.5) * 0.35,
+
+                radio: 0.6 + Math.random() * 1.5,
+
+                opacidad: 0.25 + Math.random() * 0.55,
+
+                fase: Math.random() * Math.PI * 2
+            });
+
+        }
+    }
+
+
+    /* =====================================
+       3. ADAPTAR EL CANVAS A LA PANTALLA
+    ===================================== */
+
+    function ajustarCanvas() {
+
+        const dpr = Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+        ancho = window.innerWidth;
+        alto = window.innerHeight;
+
+        canvas.width = Math.round(ancho * dpr);
+        canvas.height = Math.round(alto * dpr);
+
+        canvas.style.width = ancho + "px";
+        canvas.style.height = alto + "px";
+
+        // Mantener la nitidez en pantallas de alta resolución
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        limites = calcularLimitesImagen();
+
+        crearParticulas();
+
+        dibujar(false);
+    }
+
+
+    /* =====================================
+       4. ANIMAR Y DIBUJAR
+    ===================================== */
+
+    function dibujar(mover) {
+
+        ctx.clearRect(0, 0, ancho, alto);
+
+        // Movimiento lento y continuo
+        if (mover) {
+
+            particulas.forEach(p => {
+
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Rebotar suavemente en los límites de la imagen
+                if (p.x < limites.izquierda) {
+                    p.x = limites.izquierda;
+                    p.vx = Math.abs(p.vx);
+                }
+
+                if (p.x > limites.derecha) {
+                    p.x = limites.derecha;
+                    p.vx = -Math.abs(p.vx);
+                }
+
+                if (p.y < limites.arriba) {
+                    p.y = limites.arriba;
+                    p.vy = Math.abs(p.vy);
+                }
+
+                if (p.y > limites.abajo) {
+                    p.y = limites.abajo;
+                    p.vy = -Math.abs(p.vy);
+                }
+
+                p.fase += 0.025;
+
+            });
+
+        }
+
+
+        // Dibujar líneas entre partículas cercanas
+        const distanciaMaxima = 105;
+
+        ctx.lineWidth = 0.7;
+
+        for (let i = 0; i < particulas.length; i++) {
+
+            for (let j = i + 1; j < particulas.length; j++) {
+
+                const a = particulas[i];
+                const b = particulas[j];
+
+                const dx = a.x - b.x;
+                const dy = a.y - b.y;
+
+                const distancia = Math.sqrt(
+                    dx * dx + dy * dy
+                );
+
+                if (distancia < distanciaMaxima) {
+
+                    const intensidad =
+                        (1 - distancia / distanciaMaxima) * 0.22;
+
+                    ctx.strokeStyle =
+                        `rgba(125, 200, 230, ${intensidad})`;
+
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.stroke();
+
+                }
+
+            }
+
+        }
+
+
+        // Dibujar los puntos luminosos
+        particulas.forEach(p => {
+
+            const brillo =
+                0.75 + Math.sin(p.fase) * 0.25;
+
+            const opacidad = p.opacidad * brillo;
+
+            ctx.beginPath();
+
+            ctx.arc(
+                p.x,
+                p.y,
+                p.radio,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fillStyle =
+                `rgba(225, 245, 255, ${opacidad})`;
+
+            ctx.shadowColor = "rgba(115, 205, 255, 0.6)";
+            ctx.shadowBlur = 7;
+
+            ctx.fill();
+
+        });
+
+        // Evitar que el brillo afecte a otras operaciones
+        ctx.shadowBlur = 0;
+    }
+
+
+    /* =====================================
+       5. BUCLE DE ANIMACIÓN
+    ===================================== */
+
+    function animar() {
+
+        dibujar(true);
+
+        if (!movimientoReducido) {
+            requestAnimationFrame(animar);
+        }
+
+    }
+
+
+    /* =====================================
+       6. INICIAR Y ADAPTAR
+    ===================================== */
+
+    ajustarCanvas();
+
+    if (!movimientoReducido) {
+        requestAnimationFrame(animar);
+    }
+
+    // Recalcular al cambiar tamaño u orientación
+    window.addEventListener("resize", ajustarCanvas);
+
+    // Actualizar si <picture> cambia de imagen
+    imagen.addEventListener("load", ajustarCanvas);
+
+}

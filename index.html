@@ -28,11 +28,31 @@
     </div>
 
 <!-- IMAGEN PRINCIPAL DE LA INVITACIÓN -->
+
 <div class="invitacion-overlay">
-    <img
-        src="imagenes/invitacion.png"
-        alt="Invitación oficial de la FINTECH"
-        class="imagen-invitacion">
+
+    <picture class="picture-invitacion">
+
+        <!-- Imagen para pantallas horizontales -->
+        <source
+            media="(orientation: landscape)"
+            srcset="imagenes/horizontal.png">
+
+        <!-- Imagen predeterminada para pantallas verticales -->
+        <img
+            src="imagenes/vertical.png"
+            alt="Invitación oficial de la FINTECH"
+            class="imagen-invitacion">
+
+    </picture>
+
+    <!-- CAPA DE PARTÍCULAS -->
+    <canvas
+      id="canvas-particulas"
+      class="canvas-particulas"
+      aria-hidden="true">
+    </canvas>
+
 </div>
     
 <!-- BOTÓN PRINCIPAL -->
