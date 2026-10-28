@@ -1,4 +1,3 @@
-
 /* =========================================
    FINTECH - LÓGICA DE LA PÁGINA
 ========================================= */
@@ -42,6 +41,40 @@ function iniciarPagina() {
         estadoExito?.querySelector("p");
 
     const botonEnviar = formulario?.querySelector(".btn-enviar");
+    
+    // Elementos del selector de modalidad
+    const vistaSelector = document.getElementById("vista-selector");
+    const vistaIndividual = document.getElementById("vista-individual");
+    const vistaGrupal = document.getElementById("vista-grupal");
+
+    const botonModalIndividual =
+        document.getElementById("btn-modal-individual");
+
+    const botonModalGrupal =
+        document.getElementById("btn-modal-grupal");
+
+    // Elementos del formulario grupal
+    const formularioGrupal =
+        document.getElementById("formulario-grupal");
+
+    const contenedorParticipantes =
+        document.getElementById("participantes-adicionales");
+
+    const botonAnadirParticipante =
+        document.getElementById("btn-anadir-participante");
+
+    const contadorParticipantes =
+        document.getElementById("contador-participantes");
+
+    const MAX_PARTICIPANTES = 10;
+    let cantidadParticipantes = 1;
+
+    const botonVolverSelector =
+        document.getElementById("btn-volver-selector");
+
+    const botonVolverSelectorGrupal =
+        document.getElementById("btn-volver-selector-grupal");
+
 
 
     /* =====================================
@@ -53,6 +86,13 @@ function iniciarPagina() {
         modal,
         botonCerrar,
         formulario,
+        vistaSelector,
+        vistaIndividual,
+        vistaGrupal,
+        botonModalIndividual,
+        botonModalGrupal,
+        botonVolverSelector,
+        botonVolverSelectorGrupal,
         iframeRespuesta,
         botonFinalizar,
         botonReintentar,
@@ -83,10 +123,14 @@ function iniciarPagina() {
     /* =====================================
        3. VARIABLES DE CONTROL
     ===================================== */
-
+    
     let requestIdPendiente = null;
     let temporizador = null;
 
+    // Control de la modalidad que se está enviando
+    let formularioActivo = formulario;
+    let botonEnviarActivo = botonEnviar;
+    let modalidadPendiente = "individual";
 
     /* =====================================
        4. ESTADO INICIAL DE LA PÁGINA
@@ -98,6 +142,13 @@ function iniciarPagina() {
 
     // Mostrar el formulario únicamente dentro de la ventana
     formulario.hidden = false;
+
+    // Mostrar el selector de modalidad
+    vistaSelector.hidden = false;
+
+    // Ocultar los formularios hasta elegir una modalidad
+    vistaIndividual.hidden = true;
+    vistaGrupal.hidden = true;
 
     // Ocultar las pantallas de estado
     estadoCargando.hidden = true;
@@ -126,8 +177,17 @@ function iniciarPagina() {
         requestIdPendiente = null;
 
         formulario.reset();
-
+        // Mostrar el formulario
         formulario.hidden = false;
+
+        // Volver al selector de modalidad
+        vistaSelector.hidden = false;
+
+        // Ocultar los formularios individual y grupal
+        vistaIndividual.hidden = true;
+        vistaGrupal.hidden = true;
+
+        // Ocultar las pantallas de estado
         estadoCargando.hidden = true;
         estadoExito.hidden = true;
         estadoError.hidden = true;
@@ -188,10 +248,204 @@ function iniciarPagina() {
 
 
     botonAbrir.addEventListener("click", abrirModal);
-
     botonCerrar.addEventListener("click", cerrarModal);
 
     botonFinalizar.addEventListener("click", cerrarModal);
+
+    
+    // ==========================================
+    // SELECTOR DE MODALIDAD
+    // ==========================================
+
+    // Elegir modalidad individual
+    botonModalIndividual.addEventListener("click", () => {
+        vistaSelector.hidden = true;
+        vistaIndividual.hidden = false;
+        vistaGrupal.hidden = true;
+    });
+
+    // Elegir modalidad grupal
+    botonModalGrupal.addEventListener("click", () => {
+        vistaSelector.hidden = true;
+        vistaIndividual.hidden = true;
+        vistaGrupal.hidden = false;
+    });
+
+    // Volver al selector desde el formulario individual
+    botonVolverSelector.addEventListener("click", () => {
+        vistaSelector.hidden = false;
+        vistaIndividual.hidden = true;
+        vistaGrupal.hidden = true;
+    });
+
+    // Volver al selector desde el formulario grupal
+    botonVolverSelectorGrupal.addEventListener("click", () => {
+        vistaSelector.hidden = false;
+        vistaIndividual.hidden = true;
+        vistaGrupal.hidden = true;
+    });
+
+    // ==========================================
+    // FORMULARIO GRUPAL: AÑADIR PARTICIPANTES
+    // ==========================================
+
+    function actualizarContadorParticipantes() {
+        contadorParticipantes.textContent =
+            `Participantes: ${cantidadParticipantes} de ${MAX_PARTICIPANTES}`;
+
+        botonAnadirParticipante.disabled =
+            cantidadParticipantes >= MAX_PARTICIPANTES;
+    }
+
+    function anadirParticipante() {
+
+        if (cantidadParticipantes >= MAX_PARTICIPANTES) {
+            return;
+        }
+
+        cantidadParticipantes++;
+
+        const numero = cantidadParticipantes;
+
+        const bloque = document.createElement("div");
+        bloque.className = "participante-grupal";
+        bloque.dataset.participante = numero;
+
+        bloque.innerHTML = `
+            <hr>
+
+            <h3>Participante ${numero}</h3>
+
+            <div class="campo-formulario">
+                <label for="participante-nombre-${numero}">
+                    Nombre Completo:
+                </label>
+
+                <input
+                    type="text"
+                    id="participante-nombre-${numero}"
+                    name="participante_nombre_${numero}"
+                    placeholder="Nombre completo"
+                    required>
+            </div>
+
+            <div class="campo-formulario">
+                <label for="participante-correo-${numero}">
+                    Correo Electrónico:
+                </label>
+
+                <input
+                    type="email"
+                    id="participante-correo-${numero}"
+                    name="participante_correo_${numero}"
+                    placeholder="correo@ejemplo.com"
+                    required>
+            </div>
+
+            <div class="campo-formulario">
+                <label for="participante-celular-${numero}">
+                    Número de Celular:
+                </label>
+
+                <input
+                    type="tel"
+                    id="participante-celular-${numero}"
+                    name="participante_celular_${numero}"
+                    placeholder="Número de celular"
+                    required>
+            </div>
+
+            <button
+                type="button"
+                class="btn-eliminar-participante"
+                data-eliminar="${numero}">
+                ELIMINAR PARTICIPANTE
+            </button>
+        `;
+
+        contenedorParticipantes.appendChild(bloque);
+
+        actualizarContadorParticipantes();
+
+        bloque.querySelector(`#participante-nombre-${numero}`).focus();
+    }
+
+    botonAnadirParticipante.addEventListener(
+        "click",
+        anadirParticipante
+    );
+
+    // Eliminar un participante
+    contenedorParticipantes.addEventListener("click", (evento) => {
+
+        const botonEliminar = evento.target.closest(
+            ".btn-eliminar-participante"
+        );
+
+        if (!botonEliminar) {
+            return;
+        }
+
+        const bloque = botonEliminar.closest(".participante-grupal");
+
+        if (!bloque) {
+            return;
+        }
+
+        bloque.remove();
+
+        cantidadParticipantes--;
+
+        // Renumerar los participantes que quedan
+        const bloques = contenedorParticipantes.querySelectorAll(
+            ".participante-grupal"
+        );
+
+        bloques.forEach((participante, indice) => {
+
+            const nuevoNumero = indice + 2;
+
+            participante.dataset.participante = nuevoNumero;
+
+            const titulo = participante.querySelector("h3");
+            titulo.textContent = `Participante ${nuevoNumero}`;
+
+            participante.querySelectorAll("input").forEach((campo) => {
+
+                const tipo = campo.name.split("_")[1];
+
+                campo.id = `participante-${tipo}-${nuevoNumero}`;
+                campo.name = `participante_${tipo}_${nuevoNumero}`;
+
+                const etiqueta = participante.querySelector(
+                    `label[for="${campo.id.replace(
+                        /-(\d+)$/,
+                        "-"
+                    )}${nuevoNumero}"]`
+                );
+
+                if (etiqueta) {
+                    etiqueta.htmlFor = campo.id;
+                }
+            });
+
+            participante.querySelectorAll("label").forEach((etiqueta, i) => {
+                const tipos = ["nombre", "correo", "celular"];
+                etiqueta.htmlFor =
+                    `participante-${tipos[i]}-${nuevoNumero}`;
+            });
+
+            participante.querySelector(".btn-eliminar-participante")
+                .dataset.eliminar = nuevoNumero;
+        });
+
+        // Mantener una numeración consecutiva para nuevas incorporaciones
+        cantidadParticipantes = bloques.length + 1;
+
+        actualizarContadorParticipantes();
+    });
+
+    actualizarContadorParticipantes();
 
 
     // Cerrar al hacer clic fuera del cuadro
@@ -223,123 +477,168 @@ function iniciarPagina() {
 
     function mostrarError(mensaje) {
 
-        formulario.hidden = true;
+    formulario.hidden = true;
+    formularioGrupal.hidden = true;
 
-        estadoCargando.hidden = true;
-        estadoExito.hidden = true;
-        estadoError.hidden = false;
+    estadoCargando.hidden = true;
+    estadoExito.hidden = true;
+    estadoError.hidden = false;
 
-        mensajeError.textContent = mensaje;
+    mensajeError.textContent = mensaje;
 
-        botonEnviar.disabled = false;
-        botonCerrar.disabled = false;
-
+    botonEnviarActivo.disabled = false;
+    botonCerrar.disabled = false;
     }
 
-
-    /* =====================================
-       9. ENVIAR LA INSCRIPCIÓN
+    
+   /* =====================================
+    9. ENVIAR LA INSCRIPCIÓN
+    INDIVIDUAL Y GRUPAL
     ===================================== */
 
-    formulario.addEventListener("submit", (evento) => {
+    function enviarInscripcion(evento, formularioActual, modalidad) {
 
-        evento.preventDefault();
+    evento.preventDefault();
 
-        // Confirmar que la URL está configurada
-        if (
-            !URL_APPS_SCRIPT.startsWith(
-                "https://script.google.com/macros/s/"
-            ) ||
-            !URL_APPS_SCRIPT.endsWith("/exec")
-        ) {
+    // Comprobar que la URL de Apps Script sea válida
+    if (
+        !URL_APPS_SCRIPT.startsWith(
+            "https://script.google.com/macros/s/"
+        ) ||
+        !URL_APPS_SCRIPT.endsWith("/exec")
+    ) {
+        mostrarError(
+            "La dirección de Google Apps Script no es válida."
+        );
+        return;
+    }
 
-            mostrarError(
-                "La dirección de Google Apps Script no es válida."
-            );
+    // Evitar envíos simultáneos
+    if (requestIdPendiente !== null) {
+        return;
+    }
 
+    // Identificar el formulario y el botón activos
+    formularioActivo = formularioActual;
+    modalidadPendiente = modalidad;
+
+    botonEnviarActivo = modalidad === "grupal"
+        ? formularioGrupal.querySelector("#btn-enviar-grupal")
+        : botonEnviar;
+
+    if (!botonEnviarActivo) {
+        mostrarError(
+            "No se encontró el botón para enviar la inscripción."
+        );
+        return;
+    }
+
+    // Crear un identificador para esta solicitud
+    const requestId =
+        Date.now() + "-" +
+        Math.random().toString(36).slice(2);
+
+    requestIdPendiente = requestId;
+
+    // El formulario individual ya tiene estos campos ocultos.
+    // En el grupal los creamos si todavía no existen.
+    function prepararCampoOculto(nombre, valor) {
+
+        let campo = formularioActual.querySelector(
+            `input[name="${nombre}"]`
+        );
+
+        if (!campo) {
+            campo = document.createElement("input");
+            campo.type = "hidden";
+            campo.name = nombre;
+            formularioActual.appendChild(campo);
+        }
+
+        campo.value = valor;
+    }
+
+    prepararCampoOculto("_requestId", requestId);
+    prepararCampoOculto(
+        "_parentOrigin",
+        window.location.origin
+    );
+
+    // Identificar el tipo de inscripción para Apps Script
+    prepararCampoOculto("tipoRegistro", modalidad);
+
+    // Mostrar la pantalla de carga
+    formulario.hidden = true;
+    formularioGrupal.hidden = true;
+
+    estadoExito.hidden = true;
+    estadoError.hidden = true;
+    estadoCargando.hidden = false;
+
+    botonEnviarActivo.disabled = true;
+    botonCerrar.disabled = true;
+
+    // Preparar el envío al iframe invisible
+    formularioActual.method = "POST";
+    formularioActual.action = URL_APPS_SCRIPT;
+    formularioActual.target = iframeRespuesta.name;
+
+    // Límite de espera: 25 segundos
+    temporizador = setTimeout(() => {
+
+        if (requestIdPendiente !== requestId) {
             return;
         }
 
+        requestIdPendiente = null;
+        temporizador = null;
 
-        // Crear un identificador para esta solicitud
-        const requestId =
-            Date.now() + "-" +
-            Math.random().toString(36).slice(2);
+        mostrarError(
+            "No recibimos respuesta a tiempo. " +
+            "Es posible que el registro se haya guardado. " +
+            "Comprueba la hoja antes de intentar enviarlo nuevamente."
+        );
 
+    }, 25000);
 
-        campoRequestId.value = requestId;
-        campoParentOrigin.value = window.location.origin;
+    try {
 
-        requestIdPendiente = requestId;
+        // Enviar al iframe sin repetir el evento submit
+        HTMLFormElement.prototype.submit.call(formularioActual);
 
+    } catch (error) {
 
-        // Mostrar la pantalla de carga
-        formulario.hidden = true;
-
-        estadoExito.hidden = true;
-        estadoError.hidden = true;
-        estadoCargando.hidden = false;
-
-        botonEnviar.disabled = true;
-        botonCerrar.disabled = true;
-
-
-        // Preparar el envío al iframe invisible
-        formulario.method = "POST";
-        formulario.action = URL_APPS_SCRIPT;
-        formulario.target = iframeRespuesta.name;
-
-
-        // Límite de espera: 25 segundos
-        temporizador = setTimeout(() => {
-
-            if (requestIdPendiente !== requestId) {
-                return;
-            }
-
-            requestIdPendiente = null;
+        if (temporizador !== null) {
+            clearTimeout(temporizador);
             temporizador = null;
-
-            mostrarError(
-                "No recibimos respuesta a tiempo. " +
-                "Es posible que el registro se haya guardado. " +
-                "Comprueba la hoja antes de intentar enviarlo nuevamente."
-            );
-
-        }, 25000);
-
-
-        try {
-
-            /*
-             * Enviar el formulario al iframe sin provocar
-             * nuevamente el evento submit.
-             */
-            HTMLFormElement.prototype.submit.call(formulario);
-
-        } catch (error) {
-
-            if (temporizador !== null) {
-                clearTimeout(temporizador);
-                temporizador = null;
-            }
-
-            requestIdPendiente = null;
-
-            console.error(
-                "FINTECH: error al enviar el formulario:",
-                error
-            );
-
-            mostrarError(
-                "No se pudo enviar el formulario. " +
-                "Comprueba tu conexión e inténtalo nuevamente."
-            );
-
         }
 
-    });
+        requestIdPendiente = null;
 
+        console.error(
+            "FINTECH: error al enviar el formulario:",
+            error
+        );
+
+        mostrarError(
+            "No se pudo enviar el formulario. " +
+            "Comprueba tu conexión e inténtalo nuevamente."
+        );
+
+    }
+  }
+
+
+   // Envío individual
+   formulario.addEventListener("submit", (evento) => {
+    enviarInscripcion(evento, formulario, "individual");
+   });
+
+
+   // Envío grupal
+   formularioGrupal.addEventListener("submit", (evento) => {
+    enviarInscripcion(evento, formularioGrupal, "grupal");
+   });
 
     /* =====================================
        10. RECIBIR RESPUESTA DE APPS SCRIPT
@@ -391,29 +690,42 @@ function iniciarPagina() {
            10A. REGISTRO CORRECTO
         ================================= */
 
-        if (resultado && resultado.ok === true) {
+        
+     if (resultado && resultado.ok === true) {
 
-            formulario.hidden = true;
+       formulario.hidden = true;
+       formularioGrupal.hidden = true;
 
-            estadoCargando.hidden = true;
-            estadoError.hidden = true;
-            estadoExito.hidden = false;
+       estadoCargando.hidden = true;
+       estadoError.hidden = true;
+       estadoExito.hidden = false;
 
-            if (mensajeExito) {
+     if (mensajeExito) {
 
-                mensajeExito.textContent =
-                    "Tu inscripción se registró correctamente. " +
-                    "Tu código de participante es: " +
-                    resultado.idParticipante + ".";
+        if (modalidadPendiente === "grupal") {
 
-            }
+            mensajeExito.textContent =
+                "La inscripción grupal se registró correctamente. " +
+                "Participantes registrados: " +
+                resultado.cantidadRegistrada + ".";
 
-            console.log(
-                "FINTECH: inscripción registrada.",
-                resultado.idParticipante
-            );
+        } else {
+
+            mensajeExito.textContent =
+                "Tu inscripción se registró correctamente. " +
+                "Tu código de participante es: " +
+                resultado.idParticipante + ".";
 
         }
+     }
+
+      console.log(
+        "FINTECH: inscripción registrada.",
+        resultado
+      );
+
+     }
+
 
 
         /* =================================
@@ -442,22 +754,27 @@ function iniciarPagina() {
        11. VOLVER AL FORMULARIO TRAS UN ERROR
     ===================================== */
 
-    botonReintentar.addEventListener("click", () => {
+    
+  botonReintentar.addEventListener("click", () => {
 
-        estadoCargando.hidden = true;
-        estadoExito.hidden = true;
-        estadoError.hidden = true;
+    estadoCargando.hidden = true;
+    estadoExito.hidden = true;
+    estadoError.hidden = true;
 
-        // Conservar los datos escritos para facilitar la corrección
-        formulario.hidden = false;
+    // Volver al formulario que se estaba utilizando
+    vistaSelector.hidden = true;
+    vistaIndividual.hidden = modalidadPendiente !== "individual";
+    vistaGrupal.hidden = modalidadPendiente !== "grupal";
 
-        botonEnviar.disabled = false;
-        botonCerrar.disabled = false;
+    formulario.hidden = modalidadPendiente !== "individual";
+    formularioGrupal.hidden = modalidadPendiente !== "grupal";
 
-    });
+    botonEnviarActivo.disabled = false;
+    botonCerrar.disabled = false;
 
+  });
 
-    console.log("FINTECH: JavaScript iniciado correctamente.");
+  console.log("FINTECH: JavaScript iniciado correctamente.");
 
 }
 

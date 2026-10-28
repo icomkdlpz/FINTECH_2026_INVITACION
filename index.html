@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -22,202 +23,449 @@
 
 <body>
 
-   <!-- PANTALLA DE CARGA -->
+    <!-- PANTALLA DE CARGA INICIAL -->
     <div id="pantalla-carga">
-     <img src="imagenes/logo.png" alt="Logo" class="logo-carga">
+        <img
+            src="imagenes/logo.png"
+            alt="Logo"
+            class="logo-carga">
     </div>
 
 
-<!-- PANTALLA PRINCIPAL DE LA INVITACIÓN -->
+    <!-- PANTALLA PRINCIPAL DE LA INVITACIÓN -->
+    <main class="pantalla-invitacion">
 
-<main class="pantalla-invitacion">
+        <!-- IMAGEN DE LA INVITACIÓN -->
+        <div class="invitacion-overlay">
 
-    <!-- IMAGEN DE LA INVITACIÓN -->
-    <div class="invitacion-overlay">
+            <picture class="picture-invitacion">
 
-        <picture class="picture-invitacion">
+                <!-- Imagen horizontal -->
+                <source
+                    media="(orientation: landscape)"
+                    srcset="imagenes/horizontal.png">
 
-            <!-- Imagen horizontal -->
-            <source
-                media="(orientation: landscape)"
-                srcset="imagenes/horizontal.png">
+                <!-- Imagen vertical -->
+                <img
+                    src="imagenes/vertical.png"
+                    alt="Invitación oficial de la FINTECH"
+                    class="imagen-invitacion">
 
-            <!-- Imagen vertical -->
-            <img
-                src="imagenes/vertical.png"
-                alt="Invitación oficial de la FINTECH"
-                class="imagen-invitacion">
+            </picture>
 
-        </picture>
+            <!-- CAPA DE PARTÍCULAS -->
+            <canvas
+                id="canvas-particulas"
+                class="canvas-particulas"
+                aria-hidden="true">
+            </canvas>
 
-        <!-- CAPA DE PARTÍCULAS -->
-        <canvas
-            id="canvas-particulas"
-            class="canvas-particulas"
-            aria-hidden="true">
-        </canvas>
+        </div>
 
-    </div>
-
-    <!-- BOTÓN EN LA PARTE INFERIOR -->
-    <button
-        type="button"
-        class="btn-confirmar"
-        id="btn-abrir-formulario">
-        CONFIRMAR ASISTENCIA
-    </button>
-
-</main>
-
-
-<!-- VENTANA EMERGENTE DEL FORMULARIO -->
-
-<!-- VENTANA EMERGENTE DEL FORMULARIO -->
-<div class="modal-overlay" id="modal-inscripcion" aria-hidden="true">
-    <section
-        class="modal-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="titulo-modal">
-        <!-- Botón para cerrar -->
+        <!-- BOTÓN DE CONFIRMACIÓN -->
         <button
             type="button"
-            class="modal-cerrar"
-            id="btn-cerrar-modal"
-            aria-label="Cerrar formulario">
-            &times;
+            class="btn-confirmar"
+            id="btn-abrir-formulario">
+            CONFIRMAR ASISTENCIA
         </button>
 
-        <h2 id="titulo-modal">FORMULARIO DE INSCRIPCIÓN</h2>
+    </main>
 
-        <!-- FORMULARIO -->
-        <form id="formulario-inscripcion">
-            <input type="hidden" name="_requestId" id="request-id">
-            <input type="hidden" name="_parentOrigin" id="parent-origin">
 
-            <div class="form-campo">
-                <label for="nombre">Nombre Completo:</label>
-                <input
-                    type="text"
-                    id="nombre"
-                    name="nombre"
-                    placeholder="Escribe tu nombre completo"
-                    autocomplete="name"
-                    required>
-            </div>
+    <!-- VENTANA EMERGENTE DEL FORMULARIO -->
+    <div
+        class="modal-overlay"
+        id="modal-inscripcion"
+        aria-hidden="true">
 
-            <div class="form-campo">
-                <label for="institucion">Institución:</label>
-                <input
-                    type="text"
-                    id="institucion"
-                    name="institucion"
-                    placeholder="Escribe tu institución"
-                    autocomplete="organization"
-                    required>
-            </div>
+        <section
+            class="modal-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="titulo-modal">
 
-            <div class="form-campo">
-                <label for="correo">Correo Electrónico:</label>
-                <input
-                    type="email"
-                    id="correo"
-                    name="correo"
-                    placeholder="ejemplo@correo.com"
-                    autocomplete="email"
-                    required>
-            </div>
-
-            <div class="form-campo">
-                <label for="celular">Número de Celular:</label>
-                <input
-                    type="tel"
-                    id="celular"
-                    name="celular"
-                    placeholder="Escribe tu número de celular"
-                    autocomplete="tel"
-                    required>
-            </div>
-
-            <button type="submit" class="btn-enviar">
-                ENVIAR
-            </button>
-
-        </form>
-
-        <!-- PANTALLA DE CARGA -->
-        <div
-            class="estado estado-cargando"
-            id="estado-cargando"
-            role="status"
-            aria-live="polite"
-            hidden>
-
-            <div class="spinner"></div>
-            <h3>Enviando inscripción...</h3>
-            <p>Estamos procesando tus datos.</p>
-
-        </div>
-
-        <!-- PANTALLA DE CONFIRMACIÓN -->
-        <div
-            class="estado estado-exito"
-            id="estado-exito"
-            role="status"
-            aria-live="polite"
-            hidden>
-
-            <div class="icono-exito">&#10003;</div>
-
-            <h3>¡Inscripción completada!</h3>
-
-            <p id="mensaje-exito">
-            Tu inscripción se registró correctamente.
-            </p>
-            
+            <!-- BOTÓN PARA CERRAR -->
             <button
                 type="button"
-                class="btn-finalizar"
-                id="btn-finalizar">
-                ACEPTAR
+                class="modal-cerrar"
+                id="btn-cerrar-modal"
+                aria-label="Cerrar formulario">
+                &times;
             </button>
 
-        </div>
 
-        <!-- PANTALLA DE ERROR -->
-        <div
-          class="estado estado-error"
-          id="estado-error"
-          role="alert"
-          aria-live="assertive"
-          hidden>
+            <!-- ==================================
+                 VISTA 1: SELECTOR DE MODALIDAD
+            =================================== -->
+            <div id="vista-selector" class="vista-modal">
 
-        <h3>No se pudo completar la inscripción</h3>
+                <h2 id="titulo-modal">CONFIRMAR ASISTENCIA</h2>
 
-        <p id="mensaje-error">
-        No fue posible registrar tus datos.
-        </p>
+                <p class="selector-descripcion">
+                    Selecciona la modalidad de inscripción.
+                </p>
 
-    <button
-        type="button"
-        class="btn-finalizar"
-        id="btn-reintentar">
-        VOLVER AL FORMULARIO
-    </button>
+                <div class="selector-opciones">
 
-</div>
+                    <button
+                        type="button"
+                        class="btn-modal-opcion"
+                        id="btn-modal-individual">
 
-    </section>
+                        <span class="opcion-titulo">
+                            INDIVIDUAL
+                        </span>
 
-</div>
+                        <span class="opcion-descripcion">
+                            Registro de una persona.
+                        </span>
 
-<!-- Destino invisible de la respuesta de Apps Script -->
-<iframe
-    id="frame-apps-script"
-    name="frame-apps-script"
-    title="Respuesta del registro"
-    hidden>
-</iframe>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn-modal-opcion"
+                        id="btn-modal-grupal">
+
+                        <span class="opcion-titulo">
+                            GRUPAL
+                        </span>
+
+                        <span class="opcion-descripcion">
+                            Registro por institución.
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 VISTA 2: FORMULARIO INDIVIDUAL
+            =================================== -->
+            <div
+                id="vista-individual"
+                class="vista-modal"
+                hidden>
+
+                <button
+                    type="button"
+                    class="btn-volver-modal"
+                    id="btn-volver-selector">
+                    ← VOLVER
+                </button>
+
+                <h2>FORMULARIO DE INSCRIPCIÓN</h2>
+
+                <form id="formulario-inscripcion">
+
+                    <input
+                        type="hidden"
+                        name="_requestId"
+                        id="request-id">
+
+                    <input
+                        type="hidden"
+                        name="_parentOrigin"
+                        id="parent-origin">
+
+                    <div class="form-campo">
+
+                        <label for="nombre">
+                            Nombre Completo:
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nombre"
+                            name="nombre"
+                            placeholder="Escribe tu nombre completo"
+                            autocomplete="name"
+                            required>
+
+                    </div>
+
+                    <div class="form-campo">
+
+                        <label for="institucion">
+                            Institución:
+                        </label>
+
+                        <input
+                            type="text"
+                            id="institucion"
+                            name="institucion"
+                            placeholder="Escribe tu institución"
+                            autocomplete="organization"
+                            required>
+
+                    </div>
+
+                    <div class="form-campo">
+
+                        <label for="correo">
+                            Correo Electrónico:
+                        </label>
+
+                        <input
+                            type="email"
+                            id="correo"
+                            name="correo"
+                            placeholder="ejemplo@correo.com"
+                            autocomplete="email"
+                            required>
+
+                    </div>
+
+                    <div class="form-campo">
+
+                        <label for="celular">
+                            Número de Celular:
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="celular"
+                            name="celular"
+                            placeholder="Escribe tu número de celular"
+                            autocomplete="tel"
+                            required>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn-enviar">
+                        ENVIAR
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- ==================================
+                 VISTA 3: REGISTRO GRUPAL
+            =================================== -->
+            <div
+                id="vista-grupal"
+                class="vista-modal"
+                hidden>
+
+                <button
+                    type="button"
+                    class="btn-volver-modal"
+                    id="btn-volver-selector-grupal">
+                    ← VOLVER
+                </button>
+
+                <h2>REGISTRO GRUPAL</h2>
+
+                <p class="selector-descripcion">
+                    Registra a los participantes de tu institución.
+                </p>
+
+                <form id="formulario-grupal">
+
+                    <!-- INSTITUCIÓN COMPARTIDA -->
+                    <div class="campo-formulario">
+
+                        <label for="grupo-institucion">
+                            Institución:
+                        </label>
+
+                        <input
+                            type="text"
+                            id="grupo-institucion"
+                            name="institucion"
+                            placeholder="Nombre de la institución"
+                            required>
+
+                    </div>
+
+                    <hr>
+
+                    <!-- PARTICIPANTE 1 -->
+                    <div class="participante-grupal">
+
+                        <h3>Participante 1</h3>
+
+                        <div class="campo-formulario">
+
+                            <label for="participante-nombre-1">
+                                Nombre Completo:
+                            </label>
+
+                            <input
+                                type="text"
+                                id="participante-nombre-1"
+                                name="participante_nombre_1"
+                                placeholder="Nombre completo"
+                                required>
+
+                        </div>
+
+                        <div class="campo-formulario">
+
+                            <label for="participante-correo-1">
+                                Correo Electrónico:
+                            </label>
+
+                            <input
+                                type="email"
+                                id="participante-correo-1"
+                                name="participante_correo_1"
+                                placeholder="correo@ejemplo.com"
+                                required>
+
+                        </div>
+
+                        <div class="campo-formulario">
+
+                            <label for="participante-celular-1">
+                                Número de Celular:
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="participante-celular-1"
+                                name="participante_celular_1"
+                                placeholder="Número de celular"
+                                required>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <!-- PARTICIPANTES ADICIONALES -->
+                    <div id="participantes-adicionales"></div>
+
+                    <!-- CONTROLES DE PARTICIPANTES -->
+                    <div class="controles-participantes">
+
+                        <button
+                            type="button"
+                            id="btn-anadir-participante">
+                            + AÑADIR PARTICIPANTE
+                        </button>
+
+                        <p id="contador-participantes">
+                            Participantes: 1 de 10
+                        </p>
+
+                    </div>
+
+                    <!-- ENVIAR INSCRIPCIÓN GRUPAL -->
+                    <button
+                        type="submit"
+                        id="btn-enviar-grupal"
+                        class="btn-enviar">
+                        ENVIAR INSCRIPCIÓN GRUPAL
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- ==================================
+                 ESTADO COMPARTIDO: CARGANDO
+                 Fuera de ambos formularios
+            =================================== -->
+            <div
+                class="estado estado-cargando"
+                id="estado-cargando"
+                role="status"
+                aria-live="polite"
+                hidden>
+
+                <div class="spinner"></div>
+
+                <h3>Enviando inscripción...</h3>
+
+                <p>
+                    Estamos enviando tus datos y procesando el registro.
+                    Por favor, espera.
+                </p>
+
+            </div>
+
+
+            <!-- ==================================
+                 ESTADO COMPARTIDO: ÉXITO
+            =================================== -->
+            <div
+                class="estado estado-exito"
+                id="estado-exito"
+                role="status"
+                aria-live="polite"
+                hidden>
+
+                <div class="icono-exito">
+                    &#10003;
+                </div>
+
+                <h3>¡Inscripción completada!</h3>
+
+                <p id="mensaje-exito">
+                    Tu inscripción se registró correctamente.
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-finalizar"
+                    id="btn-finalizar">
+                    ACEPTAR
+                </button>
+
+            </div>
+
+
+            <!-- ==================================
+                 ESTADO COMPARTIDO: ERROR
+            =================================== -->
+            <div
+                class="estado estado-error"
+                id="estado-error"
+                role="alert"
+                aria-live="assertive"
+                hidden>
+
+                <h3>
+                    No se pudo completar la inscripción
+                </h3>
+
+                <p id="mensaje-error">
+                    No fue posible registrar tus datos.
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-finalizar"
+                    id="btn-reintentar">
+                    VOLVER AL FORMULARIO
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- DESTINO INVISIBLE DE LA RESPUESTA DE APPS SCRIPT -->
+    <iframe
+        id="frame-apps-script"
+        name="frame-apps-script"
+        title="Respuesta del registro"
+        hidden>
+    </iframe>
 
 </body>
+
 </html>

@@ -1,4 +1,3 @@
-
 /* =========================================
    1. CONFIGURACIÓN GENERAL
 ========================================= */
@@ -12,61 +11,188 @@ body {
     width: 100%;
     min-height: 100%;
     margin: 0;
-
     background-color: #00132e;
 }
 
 body {
     min-height: 100vh;
     min-height: 100dvh;
-
     font-family: 'Anton', sans-serif;
     letter-spacing: 1px;
 }
 
+[hidden] {
+    display: none !important;
+}
+
+button,
+input {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    touch-action: manipulation;
+}
+
+
 /* =========================================
-   BOTÓN CONFIRMAR ASISTENCIA
+   2. PANTALLA DE CARGA INICIAL
+========================================= */
+
+#pantalla-carga {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+
+    margin: 0;
+    padding: 0;
+
+    background-color: #00d1b1;
+
+    opacity: 1;
+    pointer-events: auto;
+
+    transition: opacity 0.6s ease;
+}
+
+#pantalla-carga.ocultar {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.logo-carga {
+    display: block;
+
+    width: auto;
+    height: 20vh;
+    max-width: 75vw;
+    object-fit: contain;
+
+    animation: latido 1.5s ease-in-out infinite;
+}
+
+@keyframes latido {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+
+/* =========================================
+   3. PANTALLA PRINCIPAL DE LA INVITACIÓN
+========================================= */
+
+.pantalla-invitacion {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+
+    overflow: hidden;
+    background-color: #00132e;
+}
+
+.invitacion-overlay {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+
+    overflow: hidden;
+    background-color: #00132e;
+}
+
+.picture-invitacion {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.imagen-invitacion {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    object-position: center;
+}
+
+
+/* =========================================
+   4. CAPA DE PARTÍCULAS
+========================================= */
+
+.canvas-particulas {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+}
+
+
+/* =========================================
+   5. BOTÓN CONFIRMAR ASISTENCIA
 ========================================= */
 
 .btn-confirmar {
     display: block;
-
-    /* Tamaño */
     flex: 0 0 auto;
+    align-self: center;
+
     width: 73.61vw;
     height: 6.875vh;
     min-height: 44px;
     max-width: none;
-    padding: 0 12px;
-    box-sizing: border-box;
 
-    /* Forma */
+    margin: 12px auto;
+    margin-bottom: max(20px, env(safe-area-inset-bottom));
+    padding: 0 12px;
+
     border: 2px solid #4c889b;
     border-radius: 12px;
+
+    background-color: #4c889b;
+    color: #ffffff;
+
     box-shadow: 0 6px 0 #004aad;
 
-    /* Texto */
     font-family: 'Anton', sans-serif;
     font-size: 16px;
     font-weight: normal;
     letter-spacing: 1px;
     text-align: center;
 
-    /* Colores */
-    background-color: #4c889b;
-    color: #ffffff;
-
-    /* Posición dentro de la pantalla principal */
     position: relative;
-    top: auto;
-    right: auto;
-    bottom: auto;
-    left: auto;
-
-    transform: none;
-    margin: 12px auto 20px;
-
     z-index: 3;
+
     cursor: pointer;
 
     transition:
@@ -75,8 +201,6 @@ body {
         transform 0.2s ease,
         box-shadow 0.2s ease;
 }
-
-/* Efecto al presionar */
 
 .btn-confirmar:active {
     background-color: #004aad;
@@ -87,11 +211,10 @@ body {
     box-shadow: 0 1px 0 #004aad;
 }
 
-/* =========================================
-   3. VENTANA EMERGENTE
-========================================= */
 
-/* Oculta la ventana al cargar la página */
+/* =========================================
+   6. FONDO OSCURO DEL MODAL
+========================================= */
 
 .modal-overlay {
     display: none;
@@ -105,13 +228,14 @@ body {
 
     width: 100%;
     height: 100%;
+    height: 100dvh;
+
     padding: 16px;
 
     background-color: rgba(0, 0, 0, 0.80);
     backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
 }
-
-/* Mostrar cuando JavaScript la active */
 
 .modal-overlay.is-visible {
     display: flex;
@@ -119,7 +243,7 @@ body {
 
 
 /* =========================================
-   4. CUADRO DEL FORMULARIO
+   7. CUADRO DEL MODAL
 ========================================= */
 
 .modal-dialog {
@@ -133,40 +257,49 @@ body {
 
     padding: clamp(22px, 5vw, 32px);
 
+    overflow-x: hidden;
     overflow-y: auto;
+    overscroll-behavior: contain;
 
     background-color: #ffffff;
     color: #171717;
 
+    border: 1px solid rgba(76, 136, 155, 0.25);
     border-radius: 16px;
 
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.30);
+
+    scrollbar-width: thin;
+    scrollbar-color: #9bb8c2 #f1f1f1;
 }
-
-
-/* =========================================
-   5. TÍTULO DEL FORMULARIO
-========================================= */
 
 .modal-dialog h2 {
     margin: 0 28px 24px 0;
 
-    font-family: inherit;
+    font-family: 'Anton', sans-serif;
     font-size: clamp(19px, 4vw, 25px);
+    font-weight: normal;
     line-height: 1.3;
-    letter-spacing: inherit;
+    letter-spacing: 1px;
     text-align: center;
+}
+
+.modal-dialog h3 {
+    font-family: 'Anton', sans-serif;
+    font-weight: normal;
+    letter-spacing: 0.5px;
 }
 
 
 /* =========================================
-   6. BOTÓN CERRAR
+   8. BOTÓN CERRAR MODAL
 ========================================= */
 
 .modal-cerrar {
     position: absolute;
     top: 10px;
     right: 12px;
+    z-index: 5;
 
     display: flex;
     align-items: center;
@@ -174,7 +307,6 @@ body {
 
     width: 36px;
     height: 36px;
-
     padding: 0;
 
     border: none;
@@ -188,18 +320,134 @@ body {
     line-height: 1;
 
     cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .modal-cerrar:hover {
     background-color: #eeeeee;
+    color: #026090;
 }
 
 
 /* =========================================
-   7. CAMPOS DEL FORMULARIO
+   9. SELECTOR DE MODALIDAD
 ========================================= */
 
-.form-campo {
+.vista-modal[hidden] {
+    display: none !important;
+}
+
+.selector-descripcion {
+    margin: 0 0 24px;
+
+    color: #626262;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: center;
+}
+
+.selector-opciones {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+
+    margin-top: 20px;
+}
+
+.btn-modal-opcion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    min-width: 0;
+    min-height: 125px;
+    padding: 16px 10px;
+
+    border: 2px solid #4c889b;
+    border-radius: 12px;
+
+    background-color: #4c889b;
+    color: #ffffff;
+
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 1px;
+    text-align: center;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-modal-opcion:hover {
+    background-color: #376d80;
+    box-shadow: 0 4px 0 #004aad;
+}
+
+.btn-modal-opcion:active {
+    transform: scale(0.97);
+}
+
+.opcion-titulo {
+    font-size: 20px;
+}
+
+.opcion-descripcion {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 1.4;
+    letter-spacing: normal;
+}
+
+
+/* =========================================
+   10. BOTÓN VOLVER
+========================================= */
+
+.btn-volver-modal {
+    display: block;
+
+    margin: 0 0 18px;
+    padding: 7px 0;
+
+    border: none;
+
+    background: transparent;
+    color: #026090;
+
+    font-family: 'Anton', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+.btn-volver-modal:hover {
+    color: #01476b;
+}
+
+
+/* =========================================
+   11. CAMPOS DEL FORMULARIO INDIVIDUAL
+========================================= */
+
+.form-campo,
+.campo-formulario {
     display: flex;
     flex-direction: column;
 
@@ -207,17 +455,20 @@ body {
     margin-bottom: 18px;
 }
 
-.form-campo label {
-    font-family: inherit;
+.form-campo label,
+.campo-formulario label {
+    font-family: 'Anton', sans-serif;
     font-size: clamp(14px, 2.5vw, 16px);
     font-weight: normal;
-    letter-spacing: inherit;
+    letter-spacing: 0.5px;
 }
 
-.form-campo input {
+.form-campo input,
+.campo-formulario input {
     display: block;
 
     width: 100%;
+    min-width: 0;
     min-height: 46px;
 
     padding: 11px 12px;
@@ -228,7 +479,7 @@ body {
     background-color: #ffffff;
     color: #171717;
 
-    font-family: inherit;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     font-weight: normal;
     letter-spacing: normal;
@@ -240,17 +491,117 @@ body {
         box-shadow 0.2s ease;
 }
 
-/* Resaltar el campo seleccionado */
-
-.form-campo input:focus {
+.form-campo input:focus,
+.campo-formulario input:focus {
     border-color: #026090;
-
     box-shadow: 0 0 0 3px rgba(2, 96, 144, 0.15);
+}
+
+.form-campo input::placeholder,
+.campo-formulario input::placeholder {
+    color: #888888;
+    opacity: 1;
 }
 
 
 /* =========================================
-   8. BOTONES ENVIAR Y FINALIZAR
+   12. DISEÑO DEL REGISTRO GRUPAL
+========================================= */
+
+.participante-grupal {
+    margin: 18px 0;
+    padding: 16px;
+
+    border: 1px solid #dce7eb;
+    border-radius: 12px;
+
+    background-color: #f7fafb;
+}
+
+.participante-grupal h3 {
+    margin: 0 0 16px;
+
+    color: #026090;
+
+    font-size: 18px;
+    line-height: 1.4;
+}
+
+.participante-grupal .campo-formulario:last-child {
+    margin-bottom: 0;
+}
+
+#participantes-adicionales .participante-grupal {
+    margin-top: 18px;
+}
+
+#formulario-grupal hr {
+    height: 1px;
+    margin: 20px 0;
+
+    border: 0;
+    background-color: #d9e3e7;
+}
+
+
+/* =========================================
+   13. CONTROLES DE PARTICIPANTES
+========================================= */
+
+.controles-participantes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    margin: 18px 0;
+}
+
+#btn-anadir-participante {
+    display: block;
+
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+
+    border: 2px dashed #4c889b;
+    border-radius: 9px;
+
+    background-color: #f2f8fa;
+    color: #026090;
+
+    font-family: 'Anton', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+#btn-anadir-participante:hover {
+    background-color: #e2f0f5;
+    border-color: #026090;
+}
+
+#contador-participantes {
+    margin: 0;
+
+    color: #626262;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: center;
+}
+
+
+/* =========================================
+   14. BOTONES ENVIAR Y FINALIZAR
 ========================================= */
 
 .btn-enviar,
@@ -269,16 +620,18 @@ body {
     background-color: #026090;
     color: #ffffff;
 
-    font-family: inherit;
+    font-family: 'Anton', sans-serif;
     font-size: 16px;
-    font-weight: bold;
-    letter-spacing: inherit;
+    font-weight: normal;
+    letter-spacing: 1px;
+    text-align: center;
 
     cursor: pointer;
 
     transition:
         background-color 0.2s ease,
-        transform 0.2s ease;
+        transform 0.2s ease,
+        opacity 0.2s ease;
 }
 
 .btn-enviar:hover,
@@ -291,57 +644,66 @@ body {
     transform: scale(0.98);
 }
 
-/* Botones desactivados durante el envío */
-
 .btn-enviar:disabled,
 .btn-finalizar:disabled,
-.modal-cerrar:disabled {
+.modal-cerrar:disabled,
+#btn-anadir-participante:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
 
 
 /* =========================================
-   9. PANTALLAS DE ESTADO
+   15. ESTADOS COMPARTIDOS
+   CARGA, ÉXITO Y ERROR
 ========================================= */
 
 .estado {
-    padding-block: 25px;
+    width: 100%;
+    padding: 24px 0 12px;
+
     text-align: center;
 }
 
 .estado h3 {
-    margin: 16px 0 8px;
+    margin: 16px 0 10px;
 
-    font-family: inherit;
+    color: #171717;
+
+    font-family: 'Anton', sans-serif;
     font-size: 20px;
     font-weight: normal;
     line-height: 1.4;
+    letter-spacing: 0.5px;
 }
 
 .estado p {
-    margin: 0 0 20px;
+    margin: 0 0 22px;
 
     color: #626262;
 
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
+    font-weight: normal;
     line-height: 1.6;
     letter-spacing: normal;
 }
 
 
 /* =========================================
-   10. ANIMACIÓN DE CARGA
+   16. ANIMACIÓN DE CARGA
 ========================================= */
 
 .spinner {
-    width: 42px;
-    height: 42px;
+    width: 46px;
+    height: 46px;
 
-    margin: 10px auto 20px;
+    margin: 12px auto 22px;
 
-    border: 4px solid #dddddd;
+    border: 4px solid #dce8ec;
     border-top-color: #026090;
+    border-right-color: #4c889b;
+
     border-radius: 50%;
 
     animation: girar 0.8s linear infinite;
@@ -359,7 +721,7 @@ body {
 
 
 /* =========================================
-   11. ICONO DE CONFIRMACIÓN
+   17. ICONO DE ÉXITO
 ========================================= */
 
 .icono-exito {
@@ -367,34 +729,57 @@ body {
     align-items: center;
     justify-content: center;
 
-    width: 58px;
-    height: 58px;
+    width: 64px;
+    height: 64px;
 
-    margin: 0 auto;
+    margin: 0 auto 8px;
 
+    border: 2px solid #b8e4c3;
     border-radius: 50%;
 
     background-color: #e0f4e5;
     color: #218838;
 
-    font-family: Arial, sans-serif;
-    font-size: 32px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 34px;
     font-weight: bold;
     letter-spacing: normal;
+
+    animation: aparecer-exito 0.35s ease-out;
+}
+
+@keyframes aparecer-exito {
+    from {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 
 /* =========================================
-   12. PANTALLA DE ERROR
+   18. ESTADO DE ERROR
 ========================================= */
 
 .estado-error h3 {
     color: #a12626;
 }
 
+.estado-error .btn-finalizar {
+    background-color: #a12626;
+}
+
+.estado-error .btn-finalizar:hover {
+    background-color: #811d1d;
+}
+
 
 /* =========================================
-   13. ADAPTACIÓN A CELULARES
+   19. ADAPTACIÓN A CELULARES
 ========================================= */
 
 @media (max-width: 480px) {
@@ -404,266 +789,138 @@ body {
     }
 
     .modal-dialog {
+        max-height: 92vh;
+        max-height: 92dvh;
+
         padding: 24px 18px;
 
         border-radius: 13px;
     }
 
-    .form-campo {
+    .modal-dialog h2 {
+        font-size: 20px;
+    }
+
+    .form-campo,
+    .campo-formulario {
         margin-bottom: 15px;
     }
 
-}
-
-
-/* =========================================
-   14. RESPETAR ELEMENTOS OCULTOS
-========================================= */
-
-/* Evita mostrar formularios y estados
-   que tengan el atributo HTML hidden. */
-
-[hidden] {
-    display: none !important;
-}
-
-/* ==========================================
-   PANTALLA DE CARGA
-   ========================================== */
-
-#pantalla-carga {
-    position: fixed;
-
-    top: 0;
-    left: 0;
-
-    width: 100vw;
-    height: 100vh;
-
-    background-color: #00d1b1;
-
-    z-index: 9999;
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    opacity: 1;
-
-    transition: opacity 0.6s ease;
-
-    pointer-events: auto;
-
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-#pantalla-carga.ocultar {
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* LOGO DE LA PANTALLA DE CARGA */
-
-.logo-carga {
-    width: auto;
-    height: 20vh;
-
-    display: block;
-
-    animation: latido 1.5s ease-in-out infinite;
-}
-
-/* ==========================================
-   ANIMACIÓN DE LATIDO
-   ========================================== */
-
-@keyframes latido {
-
-    0% {
-        transform: scale(1);
+    .participante-grupal {
+        padding: 13px;
     }
 
-    50% {
-        transform: scale(1.08);
+    .selector-opciones {
+        grid-template-columns: 1fr;
     }
 
-    100% {
-        transform: scale(1);
+    .btn-modal-opcion {
+        min-height: 90px;
     }
-
-}
-
-
-/* =========================================
-   PANTALLA PRINCIPAL
-========================================= */
-
-.pantalla-invitacion {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-
-    width: 100%;
-    height: 100vh;
-    height: 100dvh;
-
-    display: flex;
-    flex-direction: column;
-
-    overflow: hidden;
-    background-color: #00132e;
-}
-
-
-/* =========================================
-   ÁREA DE LA IMAGEN
-========================================= */
-
-.invitacion-overlay {
-    position: relative;
-
-    /* Ocupa todo el espacio disponible sobre el botón */
-    flex: 1 1 auto;
-    min-height: 0;
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    overflow: hidden;
-    background-color: #00132e;
-}
-
-
-/* Contenedor de las imágenes vertical y horizontal */
-
-.picture-invitacion {
-    display: block;
-
-    width: 100%;
-    height: 100%;
-}
-
-
-/* Imagen seleccionada según la orientación */
-
-.imagen-invitacion {
-    display: block;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: contain;
-    object-position: center;
-}
-
-
-/* =========================================
-   PARTÍCULAS SOBRE LA IMAGEN
-========================================= */
-
-.canvas-particulas {
-    position: absolute;
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    z-index: 2;
-    pointer-events: none;
-}
-
-
-/* =========================================
-   BOTÓN INFERIOR
-========================================= */
-
-.btn-confirmar {
-    display: block;
-    flex: 0 0 auto;
-    align-self: center;
-
-    /* Tamaño */
-    width: 73.61vw;
-    height: 6.875vh;
-    max-width: none;
-    padding: 0 12px;
-    box-sizing: border-box;
-
-    /* Forma */
-    border: 2px solid #4c889b;
-    border-radius: 12px;
-
-    /* Sombra inferior */
-    box-shadow: 0 6px 0 #004aad;
-
-    /* Texto */
-    font-family: 'Anton', sans-serif;
-    font-size: 16px;
-    font-weight: normal;
-    letter-spacing: 1px;
-    text-align: center;
-
-    /* Colores */
-    background-color: #4c889b;
-    color: #ffffff;
-
-    /* Separación del borde inferior */
-    margin: 12px auto;
-    margin-bottom: max(20px, env(safe-area-inset-bottom));
-
-    /* Efectos */
-    cursor: pointer;
-
-    position: relative;
-    z-index: 3;
-
-    transform: none;
-
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-
-/* Efecto de presión */
-
-.btn-confirmar:active {
-    background-color: #004aad;
-    color: #ffffff;
-    border-color: #004aad;
-
-    transform: translateY(4px);
-
-    box-shadow: 0 1px 0 #004aad;
-}
-
-
-/* =========================================
-   ADAPTACIÓN A PANTALLAS PEQUEÑAS
-========================================= */
-
-@media (max-width: 480px) {
 
     .btn-confirmar {
         width: 73.61vw;
         height: 6.875vh;
+        min-height: 44px;
+
         font-size: 14px;
+    }
+
+    .estado {
+        padding-top: 18px;
     }
 
 }
 
 
 /* =========================================
-   VENTANA EMERGENTE SOBRE TODO
+   20. PANTALLAS MUY PEQUEÑAS
 ========================================= */
 
-.modal-overlay {
-    z-index: 1000;
+@media (max-width: 350px) {
+
+    .modal-overlay {
+        padding: 8px;
+    }
+
+    .modal-dialog {
+        padding: 22px 14px;
+    }
+
+    .modal-dialog h2 {
+        font-size: 18px;
+    }
+
+    .participante-grupal {
+        padding: 10px;
+    }
+
+    .btn-enviar,
+    .btn-finalizar {
+        font-size: 14px;
+        padding: 11px 8px;
+    }
+
+}
+
+
+/* =========================================
+   21. ORIENTACIÓN HORIZONTAL
+========================================= */
+
+@media (orientation: landscape) and (max-height: 500px) {
+
+    .modal-overlay {
+        align-items: flex-start;
+        padding: 8px;
+    }
+
+    .modal-dialog {
+        max-height: 96vh;
+        max-height: 96dvh;
+
+        padding: 18px 22px;
+    }
+
+    .modal-dialog h2 {
+        margin-bottom: 16px;
+        font-size: 19px;
+    }
+
+    .selector-opciones {
+        gap: 10px;
+        margin-top: 12px;
+    }
+
+    .btn-modal-opcion {
+        min-height: 76px;
+        padding: 10px;
+    }
+
+    .selector-descripcion {
+        margin-bottom: 14px;
+    }
+
+    .logo-carga {
+        height: 28vh;
+    }
+
+}
+
+
+/* =========================================
+   22. RESPETAR LAS ANIMACIONES REDUCIDAS
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
 }
