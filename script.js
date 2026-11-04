@@ -713,8 +713,7 @@ function iniciarPagina() {
 
             mensajeExito.textContent =
                 "Tu inscripción se registró correctamente. " +
-                "Tu código de participante es: " +
-                resultado.idParticipante + ".";
+                "Revisa tu correo para el QR de asistencia";
 
         }
      }
