@@ -782,26 +782,31 @@ function iniciarPagina() {
 // PANTALLA DE CARGA
 // ==========================================
 const inicioCarga = Date.now();
-window.addEventListener("load", () => {
 
+window.addEventListener("load", () => {
     const pantallaCarga = document.getElementById("pantalla-carga");
 
     if (!pantallaCarga) return;
 
-    const tiempoMinimo = 2000; // 2000 ms = 2 segundos
+    const tiempoMinimo = 3000;
     const tiempoTranscurrido = Date.now() - inicioCarga;
-
-    const tiempoRestante = Math.max(
-        0,
-        tiempoMinimo - tiempoTranscurrido
-    );
+    const tiempoRestante = Math.max(0, tiempoMinimo - tiempoTranscurrido);
 
     setTimeout(() => {
+        // Ocultar la pantalla de carga
         pantallaCarga.classList.add("ocultar");
+
+        // Esperar a que termine la transición y abrir el formulario
+        setTimeout(() => {
+            const botonAbrirFormulario = document.getElementById("btn-abrir-formulario");
+
+            if (botonAbrirFormulario) {
+                botonAbrirFormulario.click();
+            }
+        }, 600);
+
     }, tiempoRestante);
-
 });
-
 
 /* =========================================
    FINTECH - EFECTO DE PARTÍCULAS
