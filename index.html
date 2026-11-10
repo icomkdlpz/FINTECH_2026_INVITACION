@@ -466,6 +466,60 @@
         hidden>
     </iframe>
 
+
+<!-- =========================================
+PANTALLA DE CUPOS LLENOS
+========================================= -->
+
+<div id="pantalla-cupos-llenos">
+    <div class="contenido-cupos-llenos">
+
+        <div class="icono-cupos-llenos">
+            !
+        </div>
+
+        <span class="etiqueta-cupos-llenos">
+            FINTECH CONNECT 2026
+        </span>
+
+        <h1>¡CUPOS LLENOS!</h1>
+
+        <div class="linea-cupos-llenos"></div>
+
+        <p class="mensaje-principal-cupos">
+            Hemos completado todos los cupos disponibles.
+        </p>
+
+        <p class="mensaje-secundario-cupos">
+            Muchas gracias por tu interés en formar parte de
+            FINTECH Connect 2026.
+        </p>
+
+        <p class="mensaje-final-cupos">
+            Agradecemos tu entusiasmo y esperamos verte
+            en una próxima edición.
+        </p>
+
+        <div class="pie-cupos-llenos">
+            <span>¡GRACIAS POR TU INTERÉS!</span>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Bloquear la interacción con el contenido de la invitación.
+    document.body.style.overflow = "hidden";
+
+    document.querySelectorAll("body > *").forEach(function(elemento) {
+
+        if (elemento.id !== "pantalla-cupos-llenos") {
+            elemento.inert = true;
+        }
+
+    });
+</script>
+
 </body>
 
 </html>

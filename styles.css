@@ -924,3 +924,170 @@ button {
     }
 
 }
+
+/* =========================================
+   PANTALLA DE CUPOS LLENOS
+========================================= */
+
+#pantalla-cupos-llenos {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    padding: 25px;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(0, 209, 177, 0.13),
+            transparent 45%
+        ),
+        linear-gradient(
+            145deg,
+            #00132e,
+            #002b43 65%,
+            #00132e
+        );
+
+    overflow-y: auto;
+    pointer-events: all;
+}
+
+.contenido-cupos-llenos {
+    width: 100%;
+    max-width: 480px;
+
+    padding: 45px 28px;
+
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(0, 209, 177, 0.35);
+    border-radius: 20px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.35),
+        0 0 35px rgba(0, 209, 177, 0.08);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.icono-cupos-llenos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 65px;
+    height: 65px;
+
+    margin: 0 auto 22px;
+
+    color: #00132e;
+    background: #00d1b1;
+
+    border-radius: 50%;
+
+    font-size: 38px;
+    font-weight: 800;
+}
+
+.etiqueta-cupos-llenos {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: #00d1b1;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.contenido-cupos-llenos h1 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: clamp(30px, 8vw, 43px);
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.linea-cupos-llenos {
+    width: 65px;
+    height: 3px;
+
+    margin: 22px auto;
+
+    background: #00d1b1;
+    border-radius: 5px;
+}
+
+.mensaje-principal-cupos {
+    margin: 0 0 18px;
+
+    color: #ffffff;
+
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.mensaje-secundario-cupos {
+    margin: 0 0 15px;
+
+    color: #d4e2e9;
+
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.mensaje-final-cupos {
+    margin: 0;
+
+    color: #a9c6d1;
+
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.pie-cupos-llenos {
+    margin-top: 30px;
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.pie-cupos-llenos span {
+    color: #00d1b1;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+/* Adaptación para teléfonos pequeños */
+
+@media (max-width: 380px) {
+    .contenido-cupos-llenos {
+        padding: 35px 20px;
+    }
+
+    .mensaje-principal-cupos {
+        font-size: 16px;
+    }
+
+    .mensaje-secundario-cupos,
+    .mensaje-final-cupos {
+        font-size: 13px;
+    }
+}

@@ -162,7 +162,6 @@ function iniciarPagina() {
     botonEnviar.disabled = false;
     botonCerrar.disabled = false;
 
-
     /* =====================================
        5. RESTABLECER EL FORMULARIO
     ===================================== */
@@ -197,7 +196,6 @@ function iniciarPagina() {
 
     }
 
-
     /* =====================================
        6. ABRIR LA VENTANA EMERGENTE
     ===================================== */
@@ -225,7 +223,6 @@ function iniciarPagina() {
 
     }
 
-
     /* =====================================
        7. CERRAR LA VENTANA EMERGENTE
     ===================================== */
@@ -252,7 +249,6 @@ function iniciarPagina() {
 
     botonFinalizar.addEventListener("click", cerrarModal);
 
-    
     // ==========================================
     // SELECTOR DE MODALIDAD
     // ==========================================
@@ -470,7 +466,6 @@ function iniciarPagina() {
 
     });
 
-
     /* =====================================
        8. MOSTRAR UN ERROR
     ===================================== */
@@ -490,7 +485,6 @@ function iniciarPagina() {
     botonCerrar.disabled = false;
     }
 
-    
    /* =====================================
     9. ENVIAR LA INSCRIPCIÓN
     INDIVIDUAL Y GRUPAL
@@ -725,8 +719,6 @@ function iniciarPagina() {
 
      }
 
-
-
         /* =================================
            10B. REGISTRO RECHAZADO O ERROR
         ================================= */
@@ -747,7 +739,6 @@ function iniciarPagina() {
         }
 
     });
-
 
     /* =====================================
        11. VOLVER AL FORMULARIO TRAS UN ERROR
